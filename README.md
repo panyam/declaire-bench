@@ -14,8 +14,9 @@ reproduced here as fresh code with the same shape.
 
 ## Rules
 
-- Every fixture reproduces a symptom from a profile report, and its commit
-  cites that symptom (`symptom: <shape>`).
+- Every fixture reproduces a symptom from a profile report or answers a
+  Declaire benchmark question, and its commit cites which
+  (`symptom: <shape>` or `question: <id>`).
 - Every fixture arrives with a benchmark question in Declaire that fails
   before the fix and passes after it.
 - No code, names or string values copied from the repo the symptom came from.
@@ -29,3 +30,18 @@ reproduced here as fresh code with the same shape.
 - `python/`: Python services and clients (pytest)
 
 Each grows only as fixtures need it.
+
+## Building
+
+Generated code is committed. `cd protos && buf generate` regenerates it; the
+plugin versions there match the runtimes in `java/build.gradle.kts` and
+`python/pyproject.toml`.
+
+- Java: JDK 17, `cd java && ./gradlew test`.
+- Python: `pip install ./python`.
+
+## Fixtures
+
+| Fixture | Asked by | Shape |
+|---|---|---|
+| `inventory` | Declaire q32, q32p, q33 | A Python client calls `ReserveItem` on a Java gRPC server through shared protos; a JUnit test exercises the server method directly. |
