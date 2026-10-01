@@ -1,0 +1,14 @@
+"""Calls into the inventory service."""
+
+import grpc
+
+from inventory.v1 import inventory_pb2, inventory_pb2_grpc
+
+
+def reserve_for_order(channel: grpc.Channel, order_id: str, sku: str, quantity: int) -> str:
+    """Reserves quantity of sku for order_id and returns the reservation id."""
+    stub = inventory_pb2_grpc.InventoryServiceStub(channel)
+    response = stub.ReserveItem(
+        inventory_pb2.ReserveItemRequest(order_id=order_id, sku=sku, quantity=quantity)
+    )
+    return response.reservation_id

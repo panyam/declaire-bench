@@ -1,0 +1,6 @@
+java/build/
+java/.gradle/
+python/build/
+*.egg-info/
+__pycache__/
+.venv/

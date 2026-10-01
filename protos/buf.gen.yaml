@@ -1,0 +1,15 @@
+# Generated code is committed. The plugin versions match the runtimes in
+# java/build.gradle.kts and python/pyproject.toml; bump them together.
+version: v2
+clean: true
+plugins:
+  - remote: buf.build/protocolbuffers/java:v36.2
+    out: ../java/src/main/gen
+  - remote: buf.build/grpc/java:v1.84.0
+    out: ../java/src/main/gen
+  - remote: buf.build/protocolbuffers/python:v36.2
+    out: ../python/gen
+  - remote: buf.build/protocolbuffers/pyi:v36.2
+    out: ../python/gen
+  - remote: buf.build/grpc/python:v1.84.0
+    out: ../python/gen
