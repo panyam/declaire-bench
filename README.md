@@ -38,10 +38,10 @@ plugin versions there match the runtimes in `java/build.gradle.kts` and
 `python/pyproject.toml`.
 
 - Java: JDK 17, `cd java && ./gradlew test`.
-- Python: `pip install ./python`.
+- Python: `pip install './python[test]'`, `cd python && pytest`.
 
 ## Fixtures
 
 | Fixture | Asked by | Shape |
 |---|---|---|
-| `inventory` | Declaire q32, q32p, q33 | A Python client calls `ReserveItem` on a Java gRPC server through shared protos; a JUnit test exercises the server method directly. |
+| `inventory` | Declaire q32, q32p, q33, q34 | A Python client calls `ReserveItem` on a Java gRPC server through shared protos; a JUnit test exercises the server method directly, and pytest and unittest tests exercise the client against a fake channel. |
