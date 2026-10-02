@@ -44,4 +44,4 @@ plugin versions there match the runtimes in `java/build.gradle.kts` and
 
 | Fixture | Asked by | Shape |
 |---|---|---|
-| `inventory` | Declaire q32, q32p, q33, q34, q35 | A Python client calls `ReserveItem` on a Java gRPC server through shared protos; a JUnit test exercises the server method directly, and pytest and unittest tests exercise the client against a fake channel. Private helpers (`lookup` on the server, `_request` in the client) sit behind the public methods. |
+| `inventory` | Declaire q32, q32p, q33, q34, q35, q39 | A Python client calls `ReserveItem` on a Java gRPC server through shared protos; a JUnit test exercises the server method directly, and pytest and unittest tests exercise the client against a fake channel. Private helpers (`lookup` on the server, `_request` in the client) sit behind the public methods. `reserve_at` calls the same RPC through grpc's experimental per-call API (the generated `InventoryService` class's static `ReserveItem`), and its test patches `grpc.experimental.unary_unary`. |
