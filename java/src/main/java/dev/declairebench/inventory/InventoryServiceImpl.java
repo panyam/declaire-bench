@@ -25,9 +25,8 @@ public class InventoryServiceImpl extends InventoryServiceGrpc.InventoryServiceI
 
   @Override
   public void getItem(GetItemRequest request, StreamObserver<GetItemResponse> responses) {
-    Item item = items.get(request.getSku());
+    Item item = lookup(request.getSku(), responses);
     if (item == null) {
-      responses.onError(Status.NOT_FOUND.withDescription(request.getSku()).asRuntimeException());
       return;
     }
     responses.onNext(GetItemResponse.newBuilder().setItem(item).build());
@@ -37,9 +36,8 @@ public class InventoryServiceImpl extends InventoryServiceGrpc.InventoryServiceI
   @Override
   public synchronized void reserveItem(
       ReserveItemRequest request, StreamObserver<ReserveItemResponse> responses) {
-    Item item = items.get(request.getSku());
+    Item item = lookup(request.getSku(), responses);
     if (item == null) {
-      responses.onError(Status.NOT_FOUND.withDescription(request.getSku()).asRuntimeException());
       return;
     }
     if (request.getQuantity() <= 0 || request.getQuantity() > item.getOnHand()) {
@@ -57,5 +55,14 @@ public class InventoryServiceImpl extends InventoryServiceGrpc.InventoryServiceI
             .setRemaining(remaining)
             .build());
     responses.onCompleted();
+  }
+
+  /** Returns the item for sku, or reports NOT_FOUND on responses and returns null. */
+  private Item lookup(String sku, StreamObserver<?> responses) {
+    Item item = items.get(sku);
+    if (item == null) {
+      responses.onError(Status.NOT_FOUND.withDescription(sku).asRuntimeException());
+    }
+    return item;
   }
 }
